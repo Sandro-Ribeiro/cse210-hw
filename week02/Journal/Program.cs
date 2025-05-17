@@ -1,9 +1,19 @@
 using System;
+using System.Runtime.InteropServices;
 
 class Program
 {
+    public static void Pause(string message)
+    {
+        Console.WriteLine();
+        Console.WriteLine(message);
+        Console.ReadLine();
+    }
+
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello World! This is the Journal Project.");
+        Journal myJournal = new Journal();
+        myJournal.RunJournal();
+
     }
 }
