@@ -9,7 +9,7 @@ public class Word
 
     public Word()
     {
-        _isHidden = true;
+        _isHidden = false;
     }
 
     public void SetText(string text)
@@ -42,11 +42,11 @@ public class Word
         if (_isHidden)
         {
             string newText = new string('_', _text.Length);
-            return newText + _punctuation;
+            return newText + _punctuation + " ";
         }
         else
         {
-            return _text;
+            return _text + " ";
         }
     }
 }

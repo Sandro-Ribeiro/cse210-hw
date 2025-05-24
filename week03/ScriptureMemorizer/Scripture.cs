@@ -41,12 +41,20 @@ public class Scripture
 
         while (hiddenCount < numberToHide)
         {
-            int index = random.Next(_words.Count);
-            if (!_words[index].IsHidden())
+            List<Word> remainVisible = RemainVisible();
+            if (remainVisible.Count > 0)
             {
-                _words[index].Hide();
+                int index1 = random.Next(remainVisible.Count);
+                Word target = remainVisible[index1];
+                int index2 = _words.IndexOf(target);
+                _words[index2].Hide();
                 hiddenCount++;
             }
+            else
+            {
+                break;
+            }
+
         }
     }
 
@@ -60,6 +68,20 @@ public class Scripture
         }
         return _reference.GetDisplayText() + " " + sentence.Trim();
 
+    }
+
+    public List<Word> RemainVisible()
+    {
+        List<Word> remainVisible = new List<Word>();
+
+        foreach (Word word in _words)
+        {
+            if (!word.IsHidden())
+            {
+                remainVisible.Add(word);
+            }
+        }
+        return remainVisible;
     }
 
     public bool IsCompleteHidden()

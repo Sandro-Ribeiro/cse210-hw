@@ -5,6 +5,7 @@ class Program
 {
     static void Main(string[] args)
     {
+
         string book = "Alma";
         int chapter = 34;
         int verse = 30;
@@ -19,13 +20,24 @@ class Program
         Reference reference = new Reference(book, chapter, verse, endVerse);
         Scripture scripture = new Scripture(reference, text);
 
-        string option = "";
+        string option;
+        int numberToHide = 2;
 
-        while (option != "quit")
+        Console.Clear();
+        Console.WriteLine($"{scripture.GetDisplayText()}");
+        Console.WriteLine();
+        Console.WriteLine("Press enter to continue or type 'quit' to finish");
+        option = Console.ReadLine();
+
+        while (option != "quit" && !scripture.IsCompleteHidden())
         {
-            
+            scripture.HideRandomWords(numberToHide);
+            Console.Clear();
+            Console.WriteLine($"{scripture.GetDisplayText()}");
+            Console.WriteLine();
+            Console.WriteLine("Press enter to continue or type 'quit' to finish");
+            option = Console.ReadLine();
         }
-
           
     }
 }
