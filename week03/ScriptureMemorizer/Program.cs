@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 class Program
 {
@@ -16,6 +17,15 @@ class Program
         " prepare to meet God; yea, behold the day of this life is the day for men to perform their labors.";
 
         Reference reference = new Reference(book, chapter, verse, endVerse);
-        Scripture scripture = new Scripture(reference, text);  
+        Scripture scripture = new Scripture(reference, text);
+
+        string option = "";
+
+        while (option != "quit")
+        {
+            
+        }
+
+          
     }
 }
