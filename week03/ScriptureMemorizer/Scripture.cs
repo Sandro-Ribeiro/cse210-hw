@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters;
 
@@ -96,4 +97,5 @@ public class Scripture
         }
         return allHidden;
     }
+
 }

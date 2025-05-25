@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Dynamic;
 using System.Runtime.CompilerServices;
 
 public class Reference
@@ -24,6 +25,27 @@ public class Reference
         _endVerse = endVerse;
     }
 
+    public string GetBook()
+    {
+        return _book;
+    }
+
+    public int GetChapter()
+    {
+        return _chapter;
+    }
+
+    public int GetVerse()
+    {
+        return _verse;
+    }
+
+    public int GetEndVerse()
+    {
+        return _endVerse;
+    }
+
+
     public string GetDisplayText()
     {
         if (_endVerse != 0)
@@ -34,7 +56,7 @@ public class Reference
         {
             return _book + " " + _chapter + ": " + _verse;
         }
-        
+
     }
 
 }
