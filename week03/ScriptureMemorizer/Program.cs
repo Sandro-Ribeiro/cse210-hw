@@ -1,56 +1,124 @@
 using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Encodings.Web;
 
 class Program
 {
     static void Main(string[] args)
     {
-        string book;
-        int chapter;
-        int verse;
-        int endVerse;
-        string text;
+        Scripture currentScripture = null;
+        string[] referencesSaveLines;
+        string[] referencesLines;
 
-        book = "Alma";
-        chapter = 34;
-        verse = 30;
-        endVerse = 32;
-        text = "And now, my brethren, I would that, after ye have received so many witnesses," +
-        " seeing that the holy scriptures testify of these things, ye come forth and bring fruit unto repentance." +
-        " Yea, I would that ye would come forth and harden not your hearts any longer; for behold, now is the time" +
-        " and the day of your salvation; and therefore, if ye will repent and harden not your hearts, immediately" +
-        " shall the great plan of redemption be brought about unto you.For behold, this life is the time for men to" +
-        " prepare to meet God; yea, behold the day of this life is the day for men to perform their labors.";
-
-        Reference reference = new Reference(book, chapter, verse, endVerse);
-        Scripture scripture = new Scripture(reference, text);
-
-        Console.WriteLine("What you want to do: ");
-        Console.WriteLine("1. To try Current Scripture");
-        Console.WriteLine("2. To try Random Scripture");
-        Console.WriteLine("3. To Choose new scripture");
-        Console.WriteLine("3. To save scripture");
-
-        Console.WriteLine("Enter your choose");
+        Console.Clear();
+        Console.WriteLine("What would you like to do?");
+        Console.WriteLine();
+        Console.WriteLine("1 - Choose a verse from your saved list");
+        Console.WriteLine("2 - Browse all available verses and choose one");
+        Console.WriteLine("3 - Let the system choose a random verse for you");
+        Console.WriteLine();
+        Console.Write("Enter the number of your choice: ");
 
         int _choose = int.Parse(Console.ReadLine());
 
         switch (_choose)
         {
             case 1:
-                
+                referencesSaveLines = LoadFromFile("./Files/referencesSaved.csv");
+                if (referencesSaveLines == null || referencesSaveLines.Length == 0)
+                {
+                    Console.WriteLine("No data loaded.");
+                }
+                else
+                {
+                    ShowReferencesLines(referencesSaveLines);
+                    Console.WriteLine();
+                    Console.WriteLine("Enter with references's id: ");
+                    int id_Ref = int.Parse(Console.ReadLine());
+                    Reference referenceSave = GetReferenceById(id_Ref, referencesSaveLines);
+
+                    string[] textLines_1 = LoadFromFile("./Files/texts.csv");
+                    if (textLines_1 == null || textLines_1.Length == 0)
+                    {
+                        Console.WriteLine("No data loaded.");
+                    }
+                    else
+                    {
+                        string text = GetText(id_Ref, textLines_1);
+                        Scripture scripture_1 = new Scripture(referenceSave, text);
+                        currentScripture = scripture_1;
+                        RunGame(scripture_1);
+                        AskToSave(currentScripture);
+                    }
+                }
                 break;
+
             case 2:
+                referencesLines = LoadFromFile("./Files/references.csv");
+                if (referencesLines == null || referencesLines.Length == 0)
+                {
+                    Console.WriteLine("No data loaded.");
+                }
+                else
+                {
+                    ShowReferencesLines(referencesLines);
+                    Console.WriteLine();
+                    Console.WriteLine("Enter with references's id: ");
+                    int id_Ref = int.Parse(Console.ReadLine());
+                    Reference referenceChoose = GetReferenceById(id_Ref, referencesLines);
+                    string[] textLines_2 = LoadFromFile("./Files/texts.csv");
+                    if (textLines_2 == null || textLines_2.Length == 0)
+                    {
+                        Console.WriteLine("No data loaded.");
+                    }
+                    else
+                    {
+
+                        string text = GetText(id_Ref, textLines_2);
+                        Scripture scripture_2 = new Scripture(referenceChoose, text);
+                        currentScripture = scripture_2;
+                        RunGame(scripture_2);
+                        AskToSave(currentScripture);
+                    }
+                }
                 break;
+
             case 3:
-                break;
-            case 4:
+                referencesLines = LoadFromFile("./Files/references.csv");
+                if (referencesLines == null || referencesLines.Length == 0)
+                {
+                    Console.WriteLine("No data loaded.");
+                }
+                else
+                {
+                    int id_Ref_Random = GetRandomId_Ref(referencesLines);
+                    string[] textLines_3 = LoadFromFile("./Files/texts.csv");
+                    if (textLines_3 == null || textLines_3.Length == 0)
+                    {
+                        Console.WriteLine("No data loaded.");
+                    }
+                    else
+                    {
+                        Reference referenceRandom = GetReferenceById(id_Ref_Random, referencesLines);
+                        string text = GetText(id_Ref_Random, textLines_3);
+                        Scripture scripture_3 = new Scripture(referenceRandom, text);
+                        currentScripture = scripture_3;
+                        RunGame(scripture_3);
+                        AskToSave(currentScripture);
+                    }
+                }
                 break;
         }
+    }
 
+
+    static void RunGame(Scripture scripture)
+    {
         string option;
         int numberToHide = 2;
 
@@ -69,9 +137,8 @@ class Program
             Console.WriteLine("Press enter to continue or type 'quit' to finish");
             option = Console.ReadLine();
         }
-
     }
-
+    
 
     static string[] LoadFromFile(string file)
     {
@@ -84,23 +151,42 @@ class Program
         {
             Console.WriteLine($"Error loading the file: {ex.Message}");
             return null;
-
         }
     }
-    
 
-    public static void SaveReferenceToCsv(string filePath, Reference reference)
+
+    static void AskToSave(Scripture scripture)
+    {
+        Console.WriteLine("Do you want to save the current scripture?");
+        Console.WriteLine("Type 'Y' for yes or 'N' for no:");
+        string answer = Console.ReadLine()?.Trim().ToLower();
+
+        if (answer == "y")
+        {
+            SaveReferenceToCsv("./Files/referencesSaved.csv", scripture.GetReference());
+        }
+        else
+        {
+            Console.WriteLine("Ok! Thank you! Goodbye!");
+            Console.WriteLine("Press any key to exit the application.");
+            Console.ReadKey();
+        }
+    }
+
+
+    static void SaveReferenceToCsv(string filePath, Reference reference)
     {
         try
         {
             using (StreamWriter writer = new StreamWriter(filePath, true)) // true = append
             {
-                string book = reference.GetBook().Trim();
+                int id_ref = reference.GetId();
+                string book = reference.GetBook()?.Trim();
                 int chapter = reference.GetChapter();
                 int verse = reference.GetVerse();
                 int endVerse = reference.GetEndVerse();
 
-                writer.WriteLine($"{book},{chapter},{verse},{endVerse}");
+                writer.WriteLine($"{id_ref}|{book}|{chapter}|{verse}|{endVerse}");
             }
 
             Console.WriteLine("Referência salva com sucesso!");
@@ -112,80 +198,96 @@ class Program
     }
 
 
-
-    static Reference GetReferenceUser()
+    static void ShowReferencesLines(string[] referencesLines)
     {
-        Console.WriteLine("Enter with book´s name: ");
-        string book = Console.ReadLine();
-        Console.WriteLine("Enter with Chapter number: ");
-        int chapter = int.Parse(Console.ReadLine());
-        Console.WriteLine("Enter with first verse number: ");
-        int verse = int.Parse(Console.ReadLine());
-        Console.WriteLine("Enter with last verse number: ");
-        int endVerse = int.Parse(Console.ReadLine());
-
-        Reference reference = new Reference(book, chapter, verse, endVerse);
-
-        return reference;
-
-    }
-
-
-    static Reference SelectRandomReferenceLine(string[] referenceLines)
-    {
-        Random random = new Random();
-        int index = random.Next(1, referenceLines.Length);
-        string[] parts = referenceLines[index].Split(',');
-        string book = parts[0];
-        int chapter = int.Parse(parts[1]);
-        int verse = int.Parse(parts[2]);
-        int endVerse = int.Parse(parts[3]);
-        Reference reference = new Reference(book, chapter, verse, endVerse);
-
-        return reference;
-
-    }
-    
-    static string GetText(Reference reference, string[] textLines)
-    {
-        string book = reference.GetBook().Trim();
-        int chapter = reference.GetChapter();
-        int verse = reference.GetVerse();
-        int endVerse = reference.GetEndVerse();
-
-        string fullText = "";
-        bool collecting = false;
-
-        foreach (string line in textLines)
+        Console.WriteLine("Available References");
+        for (int i = 0; i < referencesLines.Length; i++)
         {
-            string[] parts = line.Split(',');
+            string[] parts = referencesLines[i].Split('|');
 
-            if (parts.Length < 5) continue;
-
-            string lineBook = parts[0].Trim();
-            int lineChapter = int.Parse(parts[1]);
-            int lineVerse = int.Parse(parts[2]);
-            int lineEndVerse = int.Parse(parts[3]);
-            string text = parts[4];
-
-            if (lineBook == book && lineChapter == chapter)
+            if (parts.Length < 5)
             {
-                if (!collecting && lineVerse == verse)
-                {
-                    collecting = true;
-                }
+                Console.WriteLine($"{i + 1} - Invalid format");
+                continue;
+            }
 
-                if (collecting)
-                {
-                    fullText += $" {text}";
+            bool parsedId_ref = int.TryParse(parts[0], out int id_Ref);
+            string book = parts[1]?.Trim();
+            bool parsedChapter = int.TryParse(parts[2], out int chapter);
+            bool parsedVerse = int.TryParse(parts[3], out int verse);
+            bool parsedEndVerse = int.TryParse(parts[4], out int endVerse);
 
-                    if (lineVerse == lineEndVerse)
-                    {
-                        break;
-                    }
-                }
+            if (!parsedId_ref || !parsedChapter || !parsedVerse || !parsedEndVerse)
+            {
+                Console.WriteLine($"{i + 1} - Invalid numbers in reference");
+                continue;
+            }
+
+            if (endVerse == verse)
+            {
+                Console.WriteLine($"{id_Ref} - {book} {chapter}:{verse}");
+            }
+            else
+            {
+                Console.WriteLine($"{id_Ref} - {book} {chapter}:{verse}-{endVerse}");
             }
         }
-        return fullText.Trim();
-    }  
+    }
+
+
+    static Reference GetReferenceById(int id, string[] referenceLines)
+    {
+        foreach (string line in referenceLines)
+        {
+            string[] parts = line.Split('|');
+
+            if (parts.Length < 5)
+                continue;
+
+            if (!int.TryParse(parts[0], out int id_Ref))
+                continue;
+
+            if (id_Ref == id)
+            {
+                string book = parts[1].Trim();
+                int chapter = int.Parse(parts[2]);
+                int verse = int.Parse(parts[3]);
+                int endVerse = int.Parse(parts[4]);
+
+                return new Reference(id_Ref, book, chapter, verse, endVerse);
+            }
+        }
+
+        Console.WriteLine("Reference ID not found.");
+        return null;
+    }
+
+    static int GetRandomId_Ref(string[] referenceLines)
+    {
+        Random random = new Random();
+        int index = random.Next(0, referenceLines.Length);
+        string[] parts = referenceLines[index].Split('|');
+        int id_Ref = int.Parse(parts[0]);
+
+        return id_Ref;
+    }
+
+        
+    static string GetText(int id_Ref, string[] textLines)
+    {
+        foreach (string line in textLines)
+        {
+            string[] parts = line.Split('|');
+            if (parts.Length < 2) continue;
+
+            if (int.TryParse(parts[0], out int id) && id == id_Ref)
+            {
+                return parts[1];
+            }
+        }
+
+        return "Text not found.";
+    }
+
+ 
 }

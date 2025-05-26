@@ -17,6 +17,11 @@ public class Scripture
 
     }
 
+    public Reference GetReference()
+    {
+        return _reference;
+    }
+
     public List<Word> SplitText(string text)
     {
         List<Word> words = new List<Word>();
