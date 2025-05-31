@@ -123,6 +123,15 @@ class Program
         video03.AddComment(comment03Video03);
 
 
+        // LIST OF VIDEOS
+
+        List<Video> videos = new List<Video>();
+
+        videos.Add(video01);
+        videos.Add(video02);
+        videos.Add(video03);
+
+
         // **** VISUALIZATION OF VIDEOS ****
 
         Console.Clear();
@@ -140,55 +149,25 @@ class Program
         Console.WriteLine($"|" + new string(' ', widthMax -2) + "|");
         Console.WriteLine(new string('-', widthMax));
 
-
-        // *** Video 01 ***
-
         int counter = 1;
-        Console.WriteLine();
-        Console.WriteLine($"VIDEO {counter}");
-        Console.WriteLine();
-        Console.WriteLine($"Title: {video01.GetTitle()}");
-        Console.WriteLine($"Author: {video01.GetAuthor()}");
-        Console.WriteLine($"Length: {video01.GetLengthOfVideo()}");
-        Console.WriteLine();
-        Console.WriteLine($"COMMENTS");
-        video01.DisplayComments();
-        Console.WriteLine();
-        Console.WriteLine(new string('-', 80));
 
+        foreach (Video video in videos)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"VIDEO {counter}");
+            Console.WriteLine();
+            Console.WriteLine($"Title: {video.GetTitle()}");
+            Console.WriteLine($"Author: {video.GetAuthor()}");
+            Console.WriteLine($"Length: {video.GetLengthOfVideo()}");
+            Console.WriteLine();
+            Console.WriteLine($"COMMENTS");
+            video.DisplayComments();
+            Console.WriteLine();
+            Console.WriteLine(new string('-', widthMax));
 
+            counter++;
+        }
 
-        // *** Video 02 ***
-
-        counter += 1;
-        Console.WriteLine();
-        Console.WriteLine($"VIDEO {counter}");
-        Console.WriteLine();
-        Console.WriteLine($"Title: {video02.GetTitle()}");
-        Console.WriteLine($"Author: {video02.GetAuthor()}");
-        Console.WriteLine($"Length: {video02.GetLengthOfVideo()}");
-        Console.WriteLine();
-        Console.WriteLine($"COMMENTS");
-        video02.DisplayComments();
-        Console.WriteLine();
-        Console.WriteLine(new string('-', 80));
-
-
-
-        // *** Video 03 ***
-
-        counter += 1;
-        Console.WriteLine();
-        Console.WriteLine($"VIDEO {counter}");
-        Console.WriteLine();
-        Console.WriteLine($"Title: {video03.GetTitle()}");
-        Console.WriteLine($"Author: {video03.GetAuthor()}");
-        Console.WriteLine($"Length: {video03.GetLengthOfVideo()}");
-        Console.WriteLine();
-        Console.WriteLine($"COMMENTS");
-        video03.DisplayComments();
-        Console.WriteLine();
-        Console.WriteLine(new string('-', 80));
 
         // Exit and clean terminal
 
