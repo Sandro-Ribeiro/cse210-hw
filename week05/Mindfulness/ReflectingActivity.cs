@@ -49,6 +49,7 @@ public class ReflectingActivity:Activity
         Console.WriteLine("Get ready...\n\n");
         ShowSpinner(3);
 
+        Console.Clear();
         Console.WriteLine("Consider the following prompt\n");
         Console.WriteLine($"---{GetRandomPrompt()}\n");
         Console.WriteLine(
@@ -57,23 +58,27 @@ public class ReflectingActivity:Activity
             );
         Console.ReadKey();
         
-        Console.Write(
+        Console.Clear();
+
+        Console.WriteLine(
             "Now, ponder on each of the following questions " +
             "as they related to this experience\n"
             );
 
         CountDown("You may begin in", 5);
 
-        Console.WriteLine("\nPress enter to exit");
-
         do
         {
             Console.Clear();
-            Console.WriteLine(GetRandomQuestion());
+            string question = GetRandomQuestion();
+            Console.WriteLine(question);
+            Logger.Log($"Question presented in Reflecting Activity: {question}");
             Console.WriteLine();
             CountDown("The question will change in", 5);
 
         } while (endTime > DateTime.Now);
+        
+        Logger.Log($"Reflecting Activity completed after {GetDuration()} seconds");
     }
 
     public string GetRandomPrompt()

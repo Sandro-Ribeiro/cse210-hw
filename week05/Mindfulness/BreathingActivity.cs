@@ -22,6 +22,7 @@ public class BreathingActivity:Activity
         Console.WriteLine("Get ready...\n\n");
         ShowSpinner(3);
 
+        Console.Clear();
         bool toGo = true;
         while (toGo)
         {
@@ -34,5 +35,6 @@ public class BreathingActivity:Activity
                 toGo = false;
             }
         }
+        Logger.Log("Finished all breathing cycles in Breathing Activity.");
     }
 }

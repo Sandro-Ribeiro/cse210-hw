@@ -1,6 +1,6 @@
 using System.Security.Principal;
 
-public class ListingActivity:Activity
+public class ListingActivity : Activity
 {
     private int _count;
     private List<string> _prompts = new List<string>();
@@ -23,7 +23,6 @@ public class ListingActivity:Activity
             "\nWhen have you felt the Holy Ghost this month?",
             "\nWho are some of your personal heroes?"
         });
-
     }
 
     public void Run()
@@ -35,10 +34,15 @@ public class ListingActivity:Activity
         Console.WriteLine("Get ready...\n");
         ShowSpinner(3);
 
+        Console.Clear();
         Console.WriteLine("List as many responses you can to the following prompt:");
         GetRandomPrompt();
 
+        Console.WriteLine();
         CountDown("You may begin in ", 5);
+        Console.WriteLine();
+
+        Console.WriteLine("Type your answers below:");
 
         _count = 0;
 
@@ -47,10 +51,12 @@ public class ListingActivity:Activity
             string sentence = Console.ReadLine();
             List<string> _listFromUser = GetListFromUser();
             _listFromUser.Add(sentence);
+            Logger.Log($"User listed: {sentence}");
             _count++;
         }
 
         Console.WriteLine($"\nYou listed {_count} itens!");
+        Logger.Log($"User completed Listing Activity with {_count} items in {GetDuration()} seconds");
     }
 
     public void GetRandomPrompt()
@@ -63,8 +69,6 @@ public class ListingActivity:Activity
     public List<string> GetListFromUser()
     {
         List<string> listFromUser = new List<string>();
-
         return listFromUser;
-        
     }
 }

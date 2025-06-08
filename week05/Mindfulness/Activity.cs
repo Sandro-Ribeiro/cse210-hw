@@ -51,7 +51,8 @@ public class Activity
         Console.WriteLine();
         Console.WriteLine("Well done!!\n");
         Console.WriteLine($"You have completed another {GetDuration()} seconds of the {_name}");
-        Console.WriteLine("Press any key to quit");
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return to the menu");
         Console.ReadKey();
 
     }
