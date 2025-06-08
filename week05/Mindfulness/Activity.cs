@@ -59,7 +59,7 @@ public class Activity
 
     public void ShowSpinner(int seconds)
     {
-        char[] spinner = { '|', '/', '_', '\\' };
+        char[] spinner = { '|', '/', '-', '\\' };
         int index = 0;
 
         DateTime startTime = DateTime.Now;
