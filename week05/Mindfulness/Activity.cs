@@ -40,7 +40,7 @@ public class Activity
 
     public void DisplayStartingMessage()
     {
-        Console.WriteLine();
+        Console.Clear();
         Console.Write($"Welcome to the {_name}.\n");
         Console.WriteLine($"{_descripton}");
         Console.WriteLine();
@@ -58,7 +58,7 @@ public class Activity
 
     public void ShowSpinner(int seconds)
     {
-        char[] spinner = { '|', '/', '-', '\\' };
+        char[] spinner = { '|', '/', '_', '\\' };
         int index = 0;
 
         DateTime startTime = DateTime.Now;
@@ -66,12 +66,8 @@ public class Activity
 
         while (DateTime.Now < endTime)
         {
-            if (Console.KeyAvailable)
-            {
-                break;
-            }
             Console.Write(spinner[index % spinner.Length]);
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             Console.Write("\b \b");
             index++;
         }
@@ -81,15 +77,11 @@ public class Activity
     {
         for (int i = seconds; i > 0; i--)
         {
-            if (Console.KeyAvailable)
-            {
-                break;
-            }
             string fullText = $"{sentence} {i}";
-            Console.Write($"\r{fullText}");
+            Console.Write($"{fullText}      \r");
             Thread.Sleep(1000);
         }
-        Console.Write($"\r{sentence}          ");
+        Console.Write($"{sentence}          \r");
         Console.WriteLine();
     }
 

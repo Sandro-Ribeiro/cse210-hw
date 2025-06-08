@@ -7,8 +7,7 @@ class Program
         int _choice;
         do
         {
-            Console.Clear();
-            Console.WriteLine("Menu Options:");
+            Console.WriteLine("\nMenu Options:");
             Console.WriteLine();
             Console.WriteLine("1. Start breathing activity");
             Console.WriteLine("2. Start refleting activity");

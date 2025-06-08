@@ -12,7 +12,7 @@ public class ReflectingActivity:Activity
     {
         SetName("Refleting Activity");
         SetDescripton(
-            "This activity will help you reflect on times in your life when " +
+            "\nThis activity will help you reflect on times in your life when " +
             "you have shown strength and resilience. This will help you recognize " +
             "the power you have and how you can use it in other aspects of your life."
             );
@@ -41,9 +41,13 @@ public class ReflectingActivity:Activity
 
     public void Run()
     {
+
+        DateTime startTime = DateTime.Now;
+        DateTime endTime = startTime.AddSeconds(GetDuration());
+
         Console.Clear();
-        Console.WriteLine("Get ready...");
-        ShowSpinner(10);
+        Console.WriteLine("Get ready...\n\n");
+        ShowSpinner(3);
 
         Console.WriteLine("Consider the following prompt\n");
         Console.WriteLine($"---{GetRandomPrompt()}\n");
@@ -66,11 +70,10 @@ public class ReflectingActivity:Activity
         {
             Console.Clear();
             Console.WriteLine(GetRandomQuestion());
-            Console.Write("\nPress enter to exit");
+            Console.WriteLine();
             CountDown("The question will change in", 5);
 
-
-        } while (!Console.KeyAvailable);
+        } while (endTime > DateTime.Now);
     }
 
     public string GetRandomPrompt()

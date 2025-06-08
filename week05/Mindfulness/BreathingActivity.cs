@@ -7,8 +7,8 @@ public class BreathingActivity:Activity
     {
         SetName("Breathing Activity");
         SetDescripton(
-            "This activity will help you relax by walking your " +
-            "through breathing in and out slowly. \n\n" +
+            "\nThis activity will help you relax by walking your " +
+            "through breathing in and out slowly. \n" +
             "Clear your mind and focus on your breathing."
             );
     }
@@ -20,7 +20,7 @@ public class BreathingActivity:Activity
 
         Console.Clear();
         Console.WriteLine("Get ready...\n\n");
-        ShowSpinner(10);
+        ShowSpinner(3);
 
         bool toGo = true;
         while (toGo)
