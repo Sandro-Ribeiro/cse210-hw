@@ -9,7 +9,7 @@ public class EternalGoal : Goal
 
     public override void RecordEvent()
     {
-        
+
     }
 
     public override bool IsComplete()
@@ -19,6 +19,6 @@ public class EternalGoal : Goal
 
     public override string GetStringRepresentation()
     {
-        return $"SimpleGoal: {GetShortName()}, {GetDescription()}, {GetPoints()}";
+        return $"Eternal Goal: {GetShortName()}, {GetDescription()}, {GetPoints()}";
     }
 }

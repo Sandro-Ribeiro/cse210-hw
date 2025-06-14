@@ -9,6 +9,11 @@ public class SimpleGoal : Goal
         _isCompleted = false;
     }
 
+    public SimpleGoal(string name, string description, int points, bool isCompleted) : base(name, description, points)
+    {
+        _isCompleted = isCompleted;
+    }
+
     public override void RecordEvent()
     {
         _isCompleted = true;
@@ -21,13 +26,6 @@ public class SimpleGoal : Goal
 
     public override string GetStringRepresentation()
     {
-        if (IsComplete() == true)
-        {
-            return $"SimpleGoal: {GetShortName()}, {GetDescription()}, {GetPoints()}, True";
-        }
-        else
-        {
-            return $"SimpleGoal: {GetShortName()}, {GetDescription()}, {GetPoints()}, False";          
-        }
+        return $"Simple Goal: {GetShortName()}, {GetDescription()}, {GetPoints()}, {_isCompleted}";
     }
 }
