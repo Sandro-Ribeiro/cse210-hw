@@ -13,6 +13,16 @@ public abstract class Goal
         _points = points;
     }
 
+    public string GetShortName()
+    {
+        return _shortName;
+    }
+
+    public string GetDescription()
+    {
+        return _description;
+    }
+
     public int GetPoints()
     {
         return _points;
@@ -24,9 +34,8 @@ public abstract class Goal
 
     public virtual string GetDetailString()
     {
-        return $"{_shortName} : {_description} - {_points}";
+        return $"{_shortName} ({_description})";
     }
 
     public abstract string GetStringRepresentation();
-
 }

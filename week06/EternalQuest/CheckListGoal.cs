@@ -1,4 +1,5 @@
 using System;
+using System.Runtime;
 
 public class CheckListGoal : Goal
 {
@@ -10,27 +11,33 @@ public class CheckListGoal : Goal
     {
         _amountCompleted = 0;
         _target = 0;
-        _bonus = 0;
-        
+        _bonus = 0;  
     }
+
     public override void RecordEvent()
     {
-
+        _amountCompleted += 1;
     }
 
     public override bool IsComplete()
     {
-        return true;
+        if (_amountCompleted == _target)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override string GetDetailString()
     {
-        return $"";
+        return $"{GetShortName} ({GetDescription()}) -- Currently completed: {_amountCompleted}/{_target}";
     }
 
     public override string GetStringRepresentation()
     {
-        return $"";
+        return $"CheckListGoal: {GetShortName()}, {GetDescription()}, {GetPoints()}, {_bonus}, {_target}, {_amountCompleted}";          
     }
-
 }

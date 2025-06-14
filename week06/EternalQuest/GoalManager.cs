@@ -11,11 +11,13 @@ public class GoalManager
     {
         _goals = new List<Goal>();
         _score = 0;
-        
     }
 
     public void Start()
     {
+        Console.Clear();
+        DisplayPlayerInfo();
+        Console.WriteLine();
         Console.WriteLine("Menu Options");
         Console.WriteLine("  1. Create New Goal");
         Console.WriteLine("  2. List Goals");
@@ -23,16 +25,17 @@ public class GoalManager
         Console.WriteLine("  4. Load Goal");
         Console.WriteLine("  5. Record Event");
         Console.WriteLine("  6. ");
+        Console.WriteLine();
         Console.Write("Select a choice from the menu: ");
         int choice = int.Parse(Console.ReadLine());
 
         switch (choice)
         {
             case 1:
-                Console.Write("Select ");
-
+                CreateGoal();
                 break;
             case 2:
+                ListGoalDetails();
                 break;
             case 3:
                 break;
@@ -45,25 +48,58 @@ public class GoalManager
         }
     }
 
-    public int DisplayPlayerInfo()
-    {
-        return _score;
-    }
-
-    public string ListGoalNammes()
+    public void DisplayPlayerInfo()
     {
         foreach (Goal goal in _goals)
         {
-            
+            if (goal.IsComplete() == true)
+            {
+                _score += goal.GetPoints();
+            }
         }
-        return $"";
-
+        Console.WriteLine($"You have {_score} points.");
     }
 
-    public string ListGoalDetails()
+    public void ListGoalNames()
     {
-        return $"";
+        if (_goals.Count > 0)
+        {
+            Console.WriteLine("The goals are:");
+            foreach (Goal goal in _goals)
+            {
+                Console.WriteLine(goal.GetShortName());
+            }            
+        }
+        else
+        {
+            Console.WriteLine("The list is empty!");
+        }
+    }
 
+    public void ListGoalDetails()
+    {
+        string notCheck = "[ ]";
+        string yesCheck = "[X]";
+
+        if (_goals.Count > 0)
+        {
+            Console.WriteLine("The goals are:");
+            for(int i = 0; i < _goals.Count; i++)
+            {
+                if (_goals[i].IsComplete() == true)
+                {
+                    Console.WriteLine($"{i+1}. {yesCheck} {_goals[i].GetDetailString()}");
+                }
+                else
+                {
+                    Console.WriteLine($"{i+1}. {notCheck} {_goals[i].GetDetailString()}");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("The list is empty!");
+        }
     }
 
     public void CreateGoal()
@@ -113,16 +149,42 @@ public class GoalManager
 
     public void RecordEvent()
     {
-
+        Console.WriteLine("This goals are:");
+        foreach (Goal goal in _goals)
+        {
+            Console.WriteLine($"1. {goal.GetShortName()}");
+        }
+        Console.Write("Which goal did you accomplish: ");
+        int index = int.Parse(Console.ReadLine());
+        _goals[index - 1].RecordEvent();
+        int points = _goals[index - 1].GetPoints();
+        _score += points;
+        Console.WriteLine($"Congratulations, You have earned {points} points");
+        Console.WriteLine($"You now have {_score} points");
+        Console.WriteLine("Press any key to back to menu");
+        Console.ReadKey();
     }
 
     public void SaveGoals()
     {
+        string pathFile = "./lists/goals.txt";
+
+        using (StreamWriter outputFile = new StreamWriter(pathFile))
+        {
+            outputFile.WriteLine($"");
+        }
 
     }
 
     public void LoadGoals()
     {
+        string pathFile = "./lists/goals.txt";
+        string[] lines = System.IO.File.ReadAllLines(pathFile);
+
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
+        }
         
     }
 }
