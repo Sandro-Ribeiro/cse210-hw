@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Formatters;
 using System.Security.Cryptography.X509Certificates;
 
 public class GoalManager
@@ -125,6 +126,10 @@ public class GoalManager
                 Console.WriteLine("What is the amount of points associated with this goal? ");
                 points = int.Parse(Console.ReadLine());
                 SimpleGoal simpleGoal = new SimpleGoal(name, description, points);
+                _goals.Add(simpleGoal);
+                Console.WriteLine("Simple Goal added with sucess!");
+                Console.WriteLine("Press any key to back to menu");
+                Console.ReadKey();
                 break;
             case 2:
                 Console.WriteLine("What is the name of your goal? ");
@@ -134,6 +139,11 @@ public class GoalManager
                 Console.WriteLine("What is the amount of points associated with this goal? ");
                 points = int.Parse(Console.ReadLine());
                 EternalGoal eternalGoal = new EternalGoal(name, description, points);
+                _goals.Add(eternalGoal);
+                Console.WriteLine("Eternal Goal added with sucess!");
+                Console.WriteLine("Press any key to back to menu");
+                Console.ReadKey();
+
                 break;
             case 3:
                 Console.WriteLine("What is the name of your goal? ");
@@ -142,7 +152,15 @@ public class GoalManager
                 description = Console.ReadLine();
                 Console.WriteLine("What is the amount of points associated with this goal? ");
                 points = int.Parse(Console.ReadLine());
-                CheckListGoal checkListGoal = new CheckListGoal(name, description, points);
+                Console.WriteLine("What is the amount of points associated with this goal? ");
+                int target = int.Parse(Console.ReadLine());
+                Console.WriteLine("What is the amount of points associated with this goal? ");
+                int bonus = int.Parse(Console.ReadLine());
+                CheckListGoal checkListGoal = new CheckListGoal(name, description, points, target, bonus);
+                _goals.Add(checkListGoal);
+                Console.WriteLine("Checklist Goal added with sucess!");
+                Console.WriteLine("Press any key to back to menu");
+                Console.ReadKey();
                 break;
         }
     }
@@ -171,7 +189,10 @@ public class GoalManager
 
         using (StreamWriter outputFile = new StreamWriter(pathFile))
         {
-            outputFile.WriteLine($"");
+            foreach (Goal goal in _goals)
+            {
+                outputFile.WriteLine($"{goal.GetStringRepresentation()}");  
+            }
         }
 
     }
@@ -183,8 +204,7 @@ public class GoalManager
 
         foreach (string line in lines)
         {
-            Console.WriteLine(line);
+            Console.WriteLine($"{line}");
         }
-        
     }
 }
