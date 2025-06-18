@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Globalization;
 
 public abstract class Activity
@@ -18,7 +17,7 @@ public abstract class Activity
         return _date;
     }
 
-    public int GetDuraction()
+    public int GetDuration()
     {
         return _durationInMin;
     }
@@ -32,13 +31,13 @@ public abstract class Activity
     public virtual void GetSummary()
     {
         string className = GetType().Name;
-        string FormatedDate = _date.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+        string formatedDate = _date.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
 
         Console.WriteLine(
-            $"{FormatedDate}" +
-            $"{className} ({GetDuraction()} min): " +
+            $"{formatedDate} " +
+            $"{className} ({GetDuration()} min), " +
             $"Distance: {CalcDistance().ToString("F2")} km, " +
-            $"Speed: {CalcSpeed().ToString("F2")} kph," +
+            $"Speed: {CalcSpeed().ToString("F2")} kph, " +
             $"Pace: {CalcPace().ToString("F2")} min per km");
     }
 

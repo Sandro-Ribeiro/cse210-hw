@@ -5,7 +5,7 @@ public class Running : Activity
     private double _distance;
     private const double MinsPerHour = 60;
 
-    public Running(DateTime date, int duractionInMin, double distance) : base(date, duractionInMin)
+    public Running(DateTime date, int durationInMin, double distance) : base(date, durationInMin)
     {
         _distance = distance;
     }
@@ -17,12 +17,17 @@ public class Running : Activity
 
     public override double CalcSpeed()
     {
-        return (CalcDistance() / GetDuraction()) * MinsPerHour;
+        return (CalcDistance() / GetDuration()) * MinsPerHour;
     }
 
     public override double CalcPace()
     {
-        return (GetDuraction() / CalcDistance());
+        double distance = CalcDistance();
+        if (distance == 0)
+        {
+            return 0;
+        }
+        return (GetDuration() / distance);
     }
 
 }

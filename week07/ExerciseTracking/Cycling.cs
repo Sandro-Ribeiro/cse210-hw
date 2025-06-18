@@ -18,11 +18,16 @@ public class Cycling : Activity
 
     public override double CalcDistance()
     {
-        return _speed * (GetDuraction() / MinsPerHour);
+        return _speed * (GetDuration() / MinsPerHour);
     }
 
     public override double CalcPace()
     {
-        return (GetDuraction() / CalcDistance());
+        double distance = CalcDistance();
+        if (distance == 0)
+        {
+            return 0;
+        }
+        return (GetDuration() / distance);
     }
 }

@@ -20,12 +20,17 @@ public class Swimming : Activity
 
     public override double CalcSpeed()
     {
-        return (CalcDistance() / GetDuraction()) * MinsPerHour;
+        return (CalcDistance() / GetDuration()) * MinsPerHour;
     }
 
     public override double CalcPace()
     {
-        return (GetDuraction() / CalcDistance());
+        double distance = CalcDistance();
+        if (distance == 0)
+        {
+            return 0;
+        }
+        return (GetDuration() / distance);
     }
 }
 
